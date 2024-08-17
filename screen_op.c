@@ -61,9 +61,41 @@ Screen* init_screen(Type gold,Type silver,Type vip,Result *result)//abhinav
     return my_screen;    
 }
 
+
+//book_seat 
+int book_seat(Screen *screen, Type *type, Seat data, Result *result) //meghana
+{
+    if (type == NULL || screen == NULL) {
+        result->result_status = FAILURE;
+        snprintf(result->result_message, RESULT_SIZE, "Invalid screen or type pointer.");
+        return FAILURE;
+    }
+
+    for (int i = 0; i < type->c_size; i++) {
+        if (type->seat[i].phone[0] == '\0') {  // Check if the seat is empty
+            // Assign the seat details
+            snprintf(type->seat[i].phone, PHONE_SIZE, "%s", data.phone);
+            snprintf(type->seat[i].name, NAME_SIZE, "%s", data.name);
+            type->seat[i].block = data.block;
+
+            // Update result
+            result->result_status = SUCCESS;
+            snprintf(result->result_message, RESULT_SIZE, "Seat booked successfully.");
+            return SUCCESS;
+        }
+    }
+
+    // If no seats are available
+    result->result_status = FAILURE;
+    snprintf(result->result_message, RESULT_SIZE, "No available seats.");
+    return FAILURE;
+}
+
+
 /*
 int add_screen(Type gold,Type silver,Type vip,Result *);//bhavana
 int display_screen(Screen *,Result *);//chinthan
 int book_seat(Screen *,Type *,Seat data,Result *);//meghana
+
 int cancle_seat(Screen *,Type *,Seat data,Result *);//sanjith
 int total_price(Screen *,Type *,char data,Result *);//subeen*/
